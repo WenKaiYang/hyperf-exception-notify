@@ -21,7 +21,7 @@
         }
     },
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "guanguans/notify": "^1.25",
         "hyperf/di": "^3.1",
         "hyperf/exception-handler": "^3.0",
@@ -32,7 +32,7 @@
         "hyperf/command": "^3.1",
         "mockery/mockery": "^1.0",
         "phpstan/phpstan": "^1.0",
-        "phpunit/phpunit": ">=7.0",
+        "phpunit/phpunit": "^10.0",
         "swoole/ide-helper": "^4.5",
         "symfony/var-dumper": "^6.0"
     },
