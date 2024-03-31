@@ -14,5 +14,5 @@ composer require ella123/hyperf-exception-notify -vvv
 ## 配置
 
 ```shell
-php bin/hyperf.php config:publish ella123/hyperf-exception-notify
+php bin/hyperf.php vendor:publish ella123/hyperf-exception-notify
 ```
