@@ -6,7 +6,13 @@
 * hyperf >= 3.1
 
 ## 安装
-```
-composer require ares-inspired/hyperf-exception-notify -vvv
+
+```shell
+composer require ella123/hyperf-exception-notify -vvv
 ```
 
+## 配置
+
+```shell
+php bin/hyperf.php config:publish ella123/hyperf-exception-notify
+```
