@@ -12,6 +12,7 @@ declare(strict_types=1);
 use ELLa123\HyperfExceptionNotify\Sanitizers\AppendContentSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\FixPrettyJsonSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\LengthLimitSanitizer;
+use function Hyperf\Support\env;
 
 return [
     /*
@@ -22,7 +23,7 @@ return [
     | If set to false, the exception notification report will not be enabled.
     |
     */
-    'enabled' => (bool) \Hyperf\Support\env('EXCEPTION_NOTIFY_ENABLED', true),
+    'enabled' => (bool) env('EXCEPTION_NOTIFY_ENABLED', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +33,7 @@ return [
     | If set to false or enabled set to false, the exception notification report will not be enabled.
     |
     */
-    'enabled_cli' => (bool) \Hyperf\Support\env('EXCEPTION_NOTIFY_ENABLED_CLI', true),
+    'enabled_cli' => (bool) env('EXCEPTION_NOTIFY_ENABLED_CLI', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -100,7 +101,7 @@ return [
      |
      */
     'rate_limiter' => [
-        'max_attempts' => (int) \Hyperf\Support\env('EXCEPTION_NOTIFY_LIMIT', \Hyperf\Support\env('APP_ENV') === 'prod' ? 1 : 50),
+        'max_attempts' => (int) env('EXCEPTION_NOTIFY_LIMIT', env('APP_ENV') === 'prod' ? 1 : 50),
         'decay_seconds' => 300,
     ],
 
@@ -112,7 +113,7 @@ return [
     | The title of the exception notification report.
     |
     */
-    'title' => \Hyperf\Support\env('EXCEPTION_NOTIFY_REPORT_TITLE', sprintf('%s application exception report', \Hyperf\Support\env('APP_ENV'))),
+    'title' => env('EXCEPTION_NOTIFY_REPORT_TITLE', sprintf('%s application exception report', env('APP_ENV'))),
 
     /*
     |--------------------------------------------------------------------------
@@ -122,7 +123,7 @@ return [
     | The default channel of the exception notification report.
     |
     */
-    'default' => \Hyperf\Support\env('EXCEPTION_NOTIFY_DEFAULT_CHANNEL', 'log'),
+    'default' => env('EXCEPTION_NOTIFY_DEFAULT_CHANNEL', 'log'),
 
     /*
      |--------------------------------------------------------------------------
@@ -136,8 +137,8 @@ return [
         // Log
         'log' => [
             'driver' => 'log',
-            'channel' => \Hyperf\Support\env('EXCEPTION_NOTIFY_LOG_CHANNEL', 'default'),
-            'level' => \Hyperf\Support\env('EXCEPTION_NOTIFY_LOG_LEVEL', 'error'),
+            'channel' => env('EXCEPTION_NOTIFY_LOG_CHANNEL', 'default'),
+            'level' => env('EXCEPTION_NOTIFY_LOG_LEVEL', 'error'),
             'sanitizers' => [
             ],
         ],
@@ -145,13 +146,13 @@ return [
         // 飞书群机器人
         'feiShu' => [
             'driver' => 'feiShu',
-            'token' => \Hyperf\Support\env('EXCEPTION_NOTIFY_FEISHU_TOKEN'),
-            'secret' => \Hyperf\Support\env('EXCEPTION_NOTIFY_FEISHU_SECRET'),
-            'keyword' => \Hyperf\Support\env('EXCEPTION_NOTIFY_FEISHU_KEYWORD'),
+            'token' => env('EXCEPTION_NOTIFY_FEISHU_TOKEN'),
+            'secret' => env('EXCEPTION_NOTIFY_FEISHU_SECRET'),
+            'keyword' => env('EXCEPTION_NOTIFY_FEISHU_KEYWORD'),
             'sanitizers' => [
                 sprintf('%s:%s', LengthLimitSanitizer::class, 30720),
                 FixPrettyJsonSanitizer::class,
-                sprintf('%s:%s', AppendContentSanitizer::class, \Hyperf\Support\env('EXCEPTION_NOTIFY_FEISHU_KEYWORD')),
+                sprintf('%s:%s', AppendContentSanitizer::class, env('EXCEPTION_NOTIFY_FEISHU_KEYWORD')),
             ],
         ],
     ],
