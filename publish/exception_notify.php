@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * This file is part of Hyperf.
  *
@@ -9,6 +10,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 use ELLa123\HyperfExceptionNotify\Sanitizers\AppendContentSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\FixPrettyJsonSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\LengthLimitSanitizer;
@@ -143,7 +145,10 @@ return [
             ],
         ],
 
-        // 飞书群机器人
+        /**
+         *飞书群机器人
+         * @see https://www.feishu.cn/hc/zh-CN/articles/360024984973
+         */
         'feiShu' => [
             'driver' => 'feiShu',
             'token' => env('EXCEPTION_NOTIFY_FEISHU_TOKEN'),
@@ -153,6 +158,22 @@ return [
                 sprintf('%s:%s', LengthLimitSanitizer::class, 30720),
                 FixPrettyJsonSanitizer::class,
                 sprintf('%s:%s', AppendContentSanitizer::class, env('EXCEPTION_NOTIFY_FEISHU_KEYWORD')),
+            ],
+        ],
+
+        /**
+         * 钉钉群机器人
+         * @see https://developers.dingtalk.com/document/app/custom-robot-access
+         */
+        'dingTalk' => [
+            'driver' => 'dingTalk',
+            'token' => env('EXCEPTION_NOTIFY_DINGTALK_TOKEN'),
+            'secret' => env('EXCEPTION_NOTIFY_DINGTALK_SECRET'),
+            'keyword' => env('EXCEPTION_NOTIFY_DINGTALK_KEYWORD'),
+            'pipes' => [
+                sprintf('%s:%s', AppendContentSanitizer::class, env('EXCEPTION_NOTIFY_DINGTALK_KEYWORD')),
+                FixPrettyJsonSanitizer::class,
+                sprintf('%s:%s', LengthLimitSanitizer::class, 30720),
             ],
         ],
     ],

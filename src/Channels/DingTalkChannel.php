@@ -12,12 +12,18 @@ declare(strict_types=1);
 namespace ELLa123\HyperfExceptionNotify\Channels;
 
 use Guanguans\Notify\Contracts\MessageInterface;
-use Guanguans\Notify\Messages\DingTalk\MarkdownMessage;
+use Guanguans\Notify\Messages\DingTalk\TextMessage;
+use function Hyperf\Config\config;
 
 class DingTalkChannel extends NotifyAbstractChannel
 {
     protected function createMessage(string $report):MessageInterface
     {
-        return new MarkdownMessage($report);
+        return TextMessage::create(array_filter_filled([
+            'content' => $report,
+            'atMobiles' => config('exception-notify.channels.dingTalk.atMobiles'),
+            'atDingtalkIds' => config('exception-notify.channels.dingTalk.atDingtalkIds'),
+            'isAtAll' => config('exception-notify.channels.dingTalk.isAtAll'),
+        ]));
     }
 }
