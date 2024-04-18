@@ -13,6 +13,7 @@ declare(strict_types=1);
  */
 namespace ELLa123\HyperfExceptionNotify;
 
+use ELLa123\HyperfExceptionNotify\Channels\DingTalkChannel;
 use ELLa123\HyperfExceptionNotify\Channels\FeiShuChannel;
 use ELLa123\HyperfExceptionNotify\Channels\LogAbstractChannel;
 use ELLa123\HyperfExceptionNotify\Jobs\ReportExceptionJob;
@@ -23,6 +24,7 @@ use Hyperf\Collection\Arr;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Stringable\Str;
 use Throwable;
+use function Hyperf\Config\config;
 
 class ExceptionNotify extends Manager
 {
@@ -68,9 +70,9 @@ class ExceptionNotify extends Manager
 
         return ! $this->rateLimiter->attempt(
             md5($throwable->getFile() . $throwable->getLine() . $throwable->getCode() . $throwable->getMessage() . $throwable->getTraceAsString()),
-            \Hyperf\Config\config('exception_notify.rate_limiter.max_attempts'),
+            config('exception_notify.rate_limiter.max_attempts'),
             static fn (): bool => true,
-            \Hyperf\Config\config('exception_notify.rate_limiter.decay_seconds')
+            config('exception_notify.rate_limiter.decay_seconds')
         );
     }
 
@@ -81,7 +83,7 @@ class ExceptionNotify extends Manager
 
     public function getDefaultDriver(): string
     {
-        return \Hyperf\Config\config('exception_notify.default');
+        return config('exception_notify.default');
     }
 
     public function onChannel(...$channels): self
@@ -106,8 +108,8 @@ class ExceptionNotify extends Manager
     protected function createLogDriver(): LogAbstractChannel
     {
         return new LogAbstractChannel(
-            \Hyperf\Config\config('exception_notify.channels.log.channel'),
-            \Hyperf\Config\config('exception_notify.channels.log.level'),
+            config('exception_notify.channels.log.channel'),
+            config('exception_notify.channels.log.level'),
         );
     }
 
@@ -115,8 +117,18 @@ class ExceptionNotify extends Manager
     {
         return new FeiShuChannel(
             Factory::feiShu(array_filter_filled([
-                'token' => \Hyperf\Config\config('exception_notify.channels.feiShu.token'),
-                'secret' => \Hyperf\Config\config('exception_notify.channels.feiShu.secret'),
+                'token' => config('exception_notify.channels.feiShu.token'),
+                'secret' => config('exception_notify.channels.feiShu.secret'),
+            ]))
+        );
+    }
+
+    protected function createDingTalkDriver(): DingTalkChannel
+    {
+        return new DingTalkChannel(
+            Factory::DingTalk(array_filter_filled([
+                'token' => config('exception_notify.channels.dingTalk.token'),
+                'secret' => config('exception_notify.channels.dingTalk.secret'),
             ]))
         );
     }
