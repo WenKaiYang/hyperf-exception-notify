@@ -9,17 +9,16 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace ELLa123\HyperfExceptionNotify\Sanitizers;
 
-use ELLa123\HyperfExceptionNotify\Support\JsonFixer;
 use Closure;
+use ELLa123\HyperfExceptionNotify\Support\JsonFixer;
 use Throwable;
 
 class FixPrettyJsonSanitizer
 {
-    public function __construct(protected JsonFixer $jsonFixer)
-    {
-    }
+    public function __construct(protected JsonFixer $jsonFixer) {}
 
     public function handle(string $report, Closure $next, string $missingValue = '"..."'): string
     {

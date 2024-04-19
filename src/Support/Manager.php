@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace ELLa123\HyperfExceptionNotify\Support;
 
 use Hyperf\Stringable\Str;
@@ -43,7 +44,7 @@ abstract class Manager
      *
      * @throws InvalidArgumentException
      */
-    public function driver(string $driver = null): mixed
+    public function driver(?string $driver = null): mixed
     {
         $driver = $driver ?: $this->getDefaultDriver();
 

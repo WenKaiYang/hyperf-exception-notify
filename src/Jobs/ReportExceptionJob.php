@@ -9,12 +9,15 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace ELLa123\HyperfExceptionNotify\Jobs;
 
 use ELLa123\HyperfExceptionNotify\Channels\AbstractChannel;
 use ELLa123\HyperfExceptionNotify\Events\ReportedEvent;
 use ELLa123\HyperfExceptionNotify\Events\ReportingEvent;
 use Hyperf\Pipeline\Pipeline;
+
+use function ELLa123\HyperfExceptionNotify\event;
 
 class ReportExceptionJob
 {

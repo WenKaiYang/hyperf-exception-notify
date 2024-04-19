@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace ELLa123\HyperfExceptionNotify\Support;
 
 use Closure;
@@ -27,9 +28,7 @@ class RateLimiter
     /**
      * Create a new rate limiter instance.
      */
-    public function __construct(protected Redis $redis)
-    {
-    }
+    public function __construct(protected Redis $redis) {}
 
     /**
      * Register a named limiter configuration.

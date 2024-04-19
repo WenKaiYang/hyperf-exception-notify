@@ -11,6 +11,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace ELLa123\HyperfExceptionNotify;
 
 use ELLa123\HyperfExceptionNotify\Channels\DingTalkChannel;
@@ -24,6 +25,7 @@ use Hyperf\Collection\Arr;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Stringable\Str;
 use Throwable;
+
 use function Hyperf\Config\config;
 
 class ExceptionNotify extends Manager
@@ -32,8 +34,7 @@ class ExceptionNotify extends Manager
         protected CollectorManager $collectorManager,
         protected ConfigInterface $config,
         protected RateLimiter $rateLimiter
-    ) {
-    }
+    ) {}
 
     public function reportIf($condition, Throwable $throwable): void
     {

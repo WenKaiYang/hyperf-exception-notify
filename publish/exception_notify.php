@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
 /**
  * This file is part of Hyperf.
  *
@@ -10,10 +9,24 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
+use ELLa123\HyperfExceptionNotify\Collectors\ApplicationCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\ChoreCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\ExceptionBasicCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\ExceptionTraceCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\PhpInfoCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestBasicCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestCookieCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestFileCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestHeaderCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestMiddlewareCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestPostCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestQueryCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestServerCollector;
+use ELLa123\HyperfExceptionNotify\Collectors\RequestSessionCollector;
 use ELLa123\HyperfExceptionNotify\Sanitizers\AppendContentSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\FixPrettyJsonSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\LengthLimitSanitizer;
+
 use function Hyperf\Support\env;
 
 return [
@@ -77,20 +90,20 @@ return [
     |
     */
     'collector' => [
-        \ELLa123\HyperfExceptionNotify\Collectors\ExceptionTraceCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\ExceptionBasicCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\ChoreCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\ApplicationCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\PhpInfoCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestBasicCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestSessionCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestCookieCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestFileCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestHeaderCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestMiddlewareCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestPostCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestQueryCollector::class,
-        \ELLa123\HyperfExceptionNotify\Collectors\RequestServerCollector::class,
+        ExceptionTraceCollector::class,
+        ExceptionBasicCollector::class,
+        ChoreCollector::class,
+        ApplicationCollector::class,
+        PhpInfoCollector::class,
+        RequestBasicCollector::class,
+        RequestSessionCollector::class,
+        RequestCookieCollector::class,
+        RequestFileCollector::class,
+        RequestHeaderCollector::class,
+        RequestMiddlewareCollector::class,
+        RequestPostCollector::class,
+        RequestQueryCollector::class,
+        RequestServerCollector::class,
     ],
 
     /*
@@ -146,7 +159,7 @@ return [
         ],
 
         /**
-         *飞书群机器人
+         *飞书群机器人.
          * @see https://www.feishu.cn/hc/zh-CN/articles/360024984973
          */
         'feiShu' => [
@@ -162,7 +175,7 @@ return [
         ],
 
         /**
-         * 钉钉群机器人
+         * 钉钉群机器人.
          * @see https://developers.dingtalk.com/document/app/custom-robot-access
          */
         'dingTalk' => [

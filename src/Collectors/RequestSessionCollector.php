@@ -9,9 +9,11 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\Contract\SessionInterface;
+use Hyperf\Di\Exception\InvalidDefinitionException;
 
 class RequestSessionCollector extends Collector
 {
@@ -19,7 +21,7 @@ class RequestSessionCollector extends Collector
     {
         try {
             return app()->get(SessionInterface::class)->all();
-        } catch (\Hyperf\Di\Exception\InvalidDefinitionException $throwable) {
+        } catch (InvalidDefinitionException $throwable) {
             return [];
         }
     }
