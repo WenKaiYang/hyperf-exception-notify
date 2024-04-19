@@ -25,6 +25,7 @@
         "guanguans/notify": "^1.25",
         "hyperf/async-queue": "^3.1",
         "hyperf/cache": "^3.1",
+        "hyperf/config": "^3.1",
         "hyperf/di": "^3.1",
         "hyperf/exception-handler": "^3.0",
         "hyperf/framework": "^3.1",

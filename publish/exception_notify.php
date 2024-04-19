@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * This file is part of Hyperf.
  *
@@ -9,6 +10,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 use ELLa123\HyperfExceptionNotify\Collectors\ApplicationCollector;
 use ELLa123\HyperfExceptionNotify\Collectors\ChoreCollector;
 use ELLa123\HyperfExceptionNotify\Collectors\ExceptionBasicCollector;
@@ -26,7 +28,6 @@ use ELLa123\HyperfExceptionNotify\Collectors\RequestSessionCollector;
 use ELLa123\HyperfExceptionNotify\Sanitizers\AppendContentSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\FixPrettyJsonSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\LengthLimitSanitizer;
-
 use function Hyperf\Support\env;
 
 return [
@@ -187,6 +188,19 @@ return [
                 sprintf('%s:%s', AppendContentSanitizer::class, env('EXCEPTION_NOTIFY_DINGTALK_KEYWORD')),
                 FixPrettyJsonSanitizer::class,
                 sprintf('%s:%s', LengthLimitSanitizer::class, 30720),
+            ],
+        ],
+
+        /**
+         * 企业微信群机器人
+         * @see https://open.work.weixin.qq.com/api/doc/90000/90136/91770
+         */
+        'weWork' => [
+            'driver' => 'weWork',
+            'token' => env('EXCEPTION_NOTIFY_WEWORK_TOKEN'),
+            'pipes' => [
+                FixPrettyJsonSanitizer::class,
+                sprintf('%s:%s', LengthLimitSanitizer::class, 5120),
             ],
         ],
     ],

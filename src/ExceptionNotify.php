@@ -17,6 +17,7 @@ namespace ELLa123\HyperfExceptionNotify;
 use ELLa123\HyperfExceptionNotify\Channels\DingTalkChannel;
 use ELLa123\HyperfExceptionNotify\Channels\FeiShuChannel;
 use ELLa123\HyperfExceptionNotify\Channels\LogAbstractChannel;
+use ELLa123\HyperfExceptionNotify\Channels\WeWorkChannel;
 use ELLa123\HyperfExceptionNotify\Jobs\ReportExceptionJob;
 use ELLa123\HyperfExceptionNotify\Support\Manager;
 use ELLa123\HyperfExceptionNotify\Support\RateLimiter;
@@ -132,5 +133,13 @@ class ExceptionNotify extends Manager
                 'secret' => config('exception_notify.channels.dingTalk.secret'),
             ]))
         );
+    }
+
+    protected function createWeWorkChannel(): WeWorkChannel
+    {
+        return new WeWorkChannel(Factory::weWork(array_filter_filled([
+            'token' => config('exception_notify.channels.weWork.token'),
+            'secret' => config('exception_notify.channels.weWork.secret'),
+        ])));
     }
 }
