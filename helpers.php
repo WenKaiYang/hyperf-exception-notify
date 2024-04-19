@@ -19,6 +19,7 @@ use Exception;
 use Hyperf\AsyncQueue\Driver\DriverFactory;
 use Hyperf\AsyncQueue\Job;
 use Hyperf\Collection\Arr;
+use Hyperf\Context\ApplicationContext;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Di\Annotation\AbstractAnnotation;
@@ -29,6 +30,7 @@ use Hyperf\Logger\LoggerFactory;
 use Hyperf\Redis\RedisFactory;
 use Hyperf\Redis\RedisProxy;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -36,7 +38,6 @@ use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use Throwable;
-
 use function Hyperf\Support\make;
 use function Hyperf\Support\value;
 
@@ -66,7 +67,7 @@ function blank(mixed $value): bool
 
 function array_filter_filled(array $array): array
 {
-    return array_filter($array, static fn ($item) => ! blank($item));
+    return array_filter($array, static fn($item) => !blank($item));
 }
 
 /**
@@ -123,15 +124,15 @@ function is_callable_with_at_sign(mixed $callback): bool
 /**
  * 获取容器实例.
  */
-function app(): Psr\Container\ContainerInterface
+function app(): ContainerInterface
 {
-    return Hyperf\Context\ApplicationContext::getContainer();
+    return ApplicationContext::getContainer();
 }
 
 /**
  * 日志组件.
  *
- * @param string $group 日志配置
+ * @param  string  $group  日志配置
  */
 function logger(string $group = 'default'): LoggerInterface
 {
@@ -190,9 +191,9 @@ function real_ip(mixed $request = null): mixed
 /**
  * 投递队列.
  *
- * @param Job $job 异步Job
- * @param int $delay 延迟时间-秒
- * @param string $driver 消息队列驱动
+ * @param  Job  $job  异步Job
+ * @param  int  $delay  延迟时间-秒
+ * @param  string  $driver  消息队列驱动
  */
 function asyncQueue(Job $job, int $delay = 0, string $driver = 'default'): void
 {
@@ -202,9 +203,9 @@ function asyncQueue(Job $job, int $delay = 0, string $driver = 'default'): void
 /**
  * 页面重定向.
  *
- * @param string $url 跳转URL
- * @param int $status HTTP状态码
- * @param string $schema 协议
+ * @param  string  $url  跳转URL
+ * @param  int  $status  HTTP状态码
+ * @param  string  $schema  协议
  */
 function redirect(string $url, int $status = 302, string $schema = 'http'): ResponseInterface
 {
@@ -215,12 +216,12 @@ function redirect(string $url, int $status = 302, string $schema = 'http'): Resp
 /**
  * 数据缓存.
  *
- * @param string $key 缓存KEY
- * @param null|DateInterval|int $ttl 缓存时间
+ * @param  string  $key  缓存KEY
+ * @param  null|DateInterval|int  $ttl  缓存时间
  */
 function remember(string $key, null|DateInterval|int $ttl, Closure $closure): mixed
 {
-    if (! empty($value = cache()->get($key))) {
+    if (!empty($value = cache()->get($key))) {
         return $value;
     }
 
@@ -234,23 +235,23 @@ function remember(string $key, null|DateInterval|int $ttl, Closure $closure): mi
 /**
  * 修改配置项.
  *
- * @param string $key identifier of the entry to set
- * @param mixed $value the value that save to container
+ * @param  string  $key  identifier of the entry to set
+ * @param  mixed  $value  the value that save to container
  *
  * @throws ContainerExceptionInterface
  * @throws NotFoundExceptionInterface
  */
-function config_set(string $key, mixed $value): mixed
+function config_set(string $key, mixed $value): void
 {
-    return app()->get(ConfigInterface::class)->set($key, $value);
+    app()->get(ConfigInterface::class)->set($key, $value);
 }
 
 /**
  * Throw the given exception if the given condition is true.
  *
- * @param mixed $condition 判断条件
- * @param string|Throwable $exception 指定异常信息(RuntimeException)|抛出异常
- * @param mixed ...$parameters 异常自定义参数
+ * @param  mixed  $condition  判断条件
+ * @param  string|Throwable  $exception  指定异常信息(RuntimeException)|抛出异常
+ * @param  mixed  ...$parameters  异常自定义参数
  *
  * @return mixed 返回条件数据
  * @throws Throwable
@@ -271,16 +272,16 @@ function throw_if(mixed $condition, string|Throwable $exception = 'RuntimeExcept
 /**
  * Throw the given exception unless the given condition is true.
  *
- * @param mixed $condition 判断条件
- * @param string|Throwable $exception 指定异常信息(RuntimeException)|抛出异常
- * @param mixed ...$parameters 异常自定义参数
+ * @param  mixed  $condition  判断条件
+ * @param  string|Throwable  $exception  指定异常信息(RuntimeException)|抛出异常
+ * @param  mixed  ...$parameters  异常自定义参数
  *
  * @return mixed 返回条件数据
  * @throws Throwable
  */
 function throw_unless(mixed $condition, string|Throwable $exception = 'RuntimeException', ...$parameters): mixed
 {
-    throw_if(! $condition, $exception, ...$parameters);
+    throw_if(!$condition, $exception, ...$parameters);
 
     return $condition;
 }
@@ -288,7 +289,7 @@ function throw_unless(mixed $condition, string|Throwable $exception = 'RuntimeEx
 /**
  * redis用例.
  *
- * @param string $driver redis实例
+ * @param  string  $driver  redis实例
  */
 function redis(string $driver = 'default'): RedisProxy
 {
@@ -298,9 +299,9 @@ function redis(string $driver = 'default'): RedisProxy
 /**
  * 获取指定annotation.
  *
- * @param string $class 查询类
- * @param string $method 查询方法
- * @param string $annotationTarget 指定注解类
+ * @param  string  $class  查询类
+ * @param  string  $method  查询方法
+ * @param  string  $annotationTarget  指定注解类
  *
  * @throws AnnotationException
  */
@@ -319,7 +320,7 @@ function annotation_collector(
     }
 
     $classAnnotation = AnnotationCollector::getClassAnnotations($class)[$annotationTarget] ?? null;
-    if (! $classAnnotation instanceof $annotationTarget) {
+    if (!$classAnnotation instanceof $annotationTarget) {
         throw new AnnotationException("Annotation {$annotationTarget} couldn't be collected successfully.");
     }
     return $classAnnotation;
