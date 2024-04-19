@@ -159,7 +159,7 @@ return [
         ],
 
         /**
-         *飞书群机器人.
+         * 飞书群机器人.
          * @see https://www.feishu.cn/hc/zh-CN/articles/360024984973
          */
         'feiShu' => [
