@@ -20,6 +20,7 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
+
 use function Hyperf\Support\make;
 use function Hyperf\Support\value;
 
@@ -49,7 +50,7 @@ function blank(mixed $value): bool
 
 function array_filter_filled(array $array): array
 {
-    return array_filter($array, static fn($item) => !blank($item));
+    return array_filter($array, static fn ($item) => ! blank($item));
 }
 
 /**
