@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
+use Hyperf\Context\ApplicationContext;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Exception\InvalidDefinitionException;
 
@@ -20,7 +21,7 @@ class RequestSessionCollector extends Collector
     public function collect(): array
     {
         try {
-            return app()->get(SessionInterface::class)->all();
+            return ApplicationContext::getContainer()->get(SessionInterface::class)->all();
         } catch (InvalidDefinitionException $throwable) {
             return [];
         }

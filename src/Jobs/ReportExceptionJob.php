@@ -15,6 +15,7 @@ namespace ELLa123\HyperfExceptionNotify\Jobs;
 use ELLa123\HyperfExceptionNotify\Channels\AbstractChannel;
 use ELLa123\HyperfExceptionNotify\Events\ReportedEvent;
 use ELLa123\HyperfExceptionNotify\Events\ReportingEvent;
+use Hyperf\Context\ApplicationContext;
 use Hyperf\Pipeline\Pipeline;
 
 use function ELLa123\HyperfExceptionNotify\event;
@@ -34,7 +35,7 @@ class ReportExceptionJob
         $this->pipedReport = $this->pipelineReport($report);
     }
 
-    public function handle()
+    public function handle(): void
     {
         $this->fireReportingEvent($this->pipedReport);
         $result = $this->channel->report($this->pipedReport);
@@ -51,18 +52,18 @@ class ReportExceptionJob
 
     protected function pipelineReport(string $report): string
     {
-        return (new Pipeline(app()))
+        return (new Pipeline(ApplicationContext::getContainer()))
             ->send($report)
             ->through($this->getChannelPipeline())
             ->then(static fn ($report) => $report);
     }
 
-    protected function fireReportingEvent(string $report)
+    protected function fireReportingEvent(string $report): void
     {
         event(new ReportingEvent($this->channel, $report));
     }
 
-    protected function fireReportedEvent($result)
+    protected function fireReportedEvent($result): void
     {
         event(new ReportedEvent($this->channel, $result));
     }
