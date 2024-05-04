@@ -16,6 +16,8 @@ use Hyperf\Collection\Collection;
 use Hyperf\Stringable\Str;
 use Throwable;
 
+use function Hyperf\Collection\collect;
+
 /**
  * This is file is from the guanguans/laravel-exception-notify.
  */
@@ -26,13 +28,25 @@ class ExceptionContext
      */
     public static function getFormattedContext(Throwable $throwable): array
     {
-        return \Hyperf\Collection\collect(static::get($throwable))
-            ->tap(static function (Collection $collection) use ($throwable, &$exceptionLine, &$markedExceptionLine, &$maxLineLen): void {
+        return collect(static::get($throwable))
+            ->tap(static function (Collection $collection) use (
+                $throwable,
+                &$exceptionLine,
+                &$markedExceptionLine,
+                &$maxLineLen
+            ): void {
                 $exceptionLine = $throwable->getLine();
                 $markedExceptionLine = sprintf('➤ %s', $exceptionLine);
-                $maxLineLen = max(mb_strlen((string) array_key_last($collection->toArray())), mb_strlen($markedExceptionLine));
+                $maxLineLen = max(
+                    mb_strlen((string) array_key_last($collection->toArray())),
+                    mb_strlen($markedExceptionLine)
+                );
             })
-            ->mapWithKeys(static function ($code, $line) use (&$exceptionLine, &$markedExceptionLine, &$maxLineLen): array {
+            ->mapWithKeys(static function ($code, $line) use (
+                &$exceptionLine,
+                &$markedExceptionLine,
+                &$maxLineLen
+            ): array {
                 $line === $exceptionLine and $line = $markedExceptionLine;
                 $line = sprintf("%{$maxLineLen}s", $line);
 
@@ -66,7 +80,7 @@ class ExceptionContext
      */
     protected static function getFileContext(Throwable $throwable): array
     {
-        return \Hyperf\Collection\collect(explode("\n", file_get_contents($throwable->getFile())))
+        return collect(explode("\n", file_get_contents($throwable->getFile())))
             ->slice($throwable->getLine() - 10, 20)
             ->mapWithKeys(static fn ($value, $key): array => [$key + 1 => $value])
             ->all();

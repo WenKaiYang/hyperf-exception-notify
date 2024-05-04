@@ -18,6 +18,9 @@ use Hyperf\ExceptionHandler\ExceptionHandler;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
+use function Hyperf\Collection\collect;
+use function Hyperf\Config\config;
+
 class ExceptionNotifyHandler extends ExceptionHandler
 {
     #[Inject]
@@ -25,7 +28,7 @@ class ExceptionNotifyHandler extends ExceptionHandler
 
     public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
-        $channels = \Hyperf\Collection\collect(\Hyperf\Config\config('exception_notify.channels'))->keys();
+        $channels = collect(config('exception_notify.channels'))->keys();
 
         if (empty($channels)) {
             return $response;

@@ -35,11 +35,6 @@ abstract class Manager
     }
 
     /**
-     * Get the default driver name.
-     */
-    abstract public function getDefaultDriver(): string;
-
-    /**
      * Get a driver instance.
      *
      * @throws InvalidArgumentException
@@ -64,6 +59,11 @@ abstract class Manager
 
         return $this->drivers[$driver];
     }
+
+    /**
+     * Get the default driver name.
+     */
+    abstract public function getDefaultDriver(): string;
 
     /**
      * Get all of the created "drivers".

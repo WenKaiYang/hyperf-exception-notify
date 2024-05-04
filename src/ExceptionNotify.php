@@ -27,7 +27,9 @@ use Hyperf\Contract\ConfigInterface;
 use Hyperf\Stringable\Str;
 use Throwable;
 
+use function Hyperf\Collection\value;
 use function Hyperf\Config\config;
+use function Hyperf\Support\env;
 
 class ExceptionNotify extends Manager
 {
@@ -39,7 +41,7 @@ class ExceptionNotify extends Manager
 
     public function reportIf($condition, Throwable $throwable): void
     {
-        \Hyperf\Collection\value($condition) and $this->report($throwable);
+        value($condition) and $this->report($throwable);
     }
 
     public function report(Throwable $throwable): void
@@ -60,7 +62,7 @@ class ExceptionNotify extends Manager
             return true;
         }
 
-        if (! Str::is($this->config->get('exception_notify.env'), (string) \Hyperf\Support\env('APP_ENV'))) {
+        if (! Str::is($this->config->get('exception_notify.env'), (string) env('APP_ENV'))) {
             return true;
         }
 

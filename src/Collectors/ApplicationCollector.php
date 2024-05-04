@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
+use function Hyperf\Support\env;
+
 class ApplicationCollector extends Collector
 {
     /**
@@ -20,8 +22,8 @@ class ApplicationCollector extends Collector
     public function collect(): array
     {
         return [
-            'name' => \Hyperf\Support\env('APP_NAME'),
-            'environment' => \Hyperf\Support\env('APP_ENV'),
+            'name' => env('APP_NAME'),
+            'environment' => env('APP_ENV'),
         ];
     }
 }

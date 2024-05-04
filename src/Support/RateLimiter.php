@@ -81,6 +81,34 @@ class RateLimiter
     }
 
     /**
+     * Get the number of attempts for the given key.
+     */
+    public function attempts(string $key): int
+    {
+        $key = $this->cleanRateLimiterKey($key);
+
+        return (int) $this->redis->get($key);
+    }
+
+    /**
+     * Clean the rate limiter key from unicode characters.
+     */
+    public function cleanRateLimiterKey(string $key): string
+    {
+        return preg_replace('/&([a-z])[a-z]+;/i', '$1', htmlentities($key));
+    }
+
+    /**
+     * Reset the number of attempts for the given key.
+     */
+    public function resetAttempts(string $key): int
+    {
+        $key = $this->cleanRateLimiterKey($key);
+
+        return $this->redis->del($key);
+    }
+
+    /**
      * Increment the counter for a given key for a given decay time.
      */
     public function hit(string $key, int $decaySeconds = 60): int
@@ -100,23 +128,11 @@ class RateLimiter
     }
 
     /**
-     * Get the number of attempts for the given key.
+     * Get the number of retries left for the given key.
      */
-    public function attempts(string $key): int
+    public function retriesLeft(string $key, int $maxAttempts): int
     {
-        $key = $this->cleanRateLimiterKey($key);
-
-        return (int) $this->redis->get($key);
-    }
-
-    /**
-     * Reset the number of attempts for the given key.
-     */
-    public function resetAttempts(string $key): int
-    {
-        $key = $this->cleanRateLimiterKey($key);
-
-        return $this->redis->del($key);
+        return $this->remaining($key, $maxAttempts);
     }
 
     /**
@@ -129,14 +145,6 @@ class RateLimiter
         $attempts = $this->attempts($key);
 
         return $maxAttempts - $attempts;
-    }
-
-    /**
-     * Get the number of retries left for the given key.
-     */
-    public function retriesLeft(string $key, int $maxAttempts): int
-    {
-        return $this->remaining($key, $maxAttempts);
     }
 
     /**
@@ -159,13 +167,5 @@ class RateLimiter
         $key = $this->cleanRateLimiterKey($key);
 
         return max(0, $this->redis->get($key . ':timer') - $this->currentTime());
-    }
-
-    /**
-     * Clean the rate limiter key from unicode characters.
-     */
-    public function cleanRateLimiterKey(string $key): string
-    {
-        return preg_replace('/&([a-z])[a-z]+;/i', '$1', htmlentities($key));
     }
 }

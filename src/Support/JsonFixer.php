@@ -15,7 +15,6 @@ namespace ELLa123\HyperfExceptionNotify\Support;
 use RuntimeException;
 
 use function in_array;
-use function is_bool;
 use function strlen;
 
 /**
@@ -55,7 +54,7 @@ class JsonFixer
      *
      * @return $this
      */
-    public function silent(bool $silent = true)
+    public function silent(bool $silent = true): static
     {
         $this->silent = $silent;
 
@@ -67,7 +66,7 @@ class JsonFixer
      *
      * @return $this
      */
-    public function missingValue(string $value)
+    public function missingValue(string $value): static
     {
         // if (null === $value) {
         //     $value = 'null';
@@ -106,7 +105,6 @@ class JsonFixer
         return $head . $this->doFix($json) . $tail;
     }
 
-    // trait PadsJson
     public function pad($tmpJson)
     {
         if (! $this->inStr) {
@@ -122,7 +120,9 @@ class JsonFixer
         return $this->padStack($tmpJson);
     }
 
-    protected function trim($json)
+    // trait PadsJson
+
+    protected function trim($json): array
     {
         preg_match('/^(\s*)([^\s]+)(\s*)$/', $json, $match);
 
@@ -142,7 +142,7 @@ class JsonFixer
         return json_last_error() === JSON_ERROR_NONE;
     }
 
-    protected function quickFix($json)
+    protected function quickFix($json): ?string
     {
         if (strlen($json) === 1 && isset($this->pairs[$json])) {
             return $json . $this->pairs[$json];
@@ -153,14 +153,6 @@ class JsonFixer
         }
 
         return $this->padString($json);
-    }
-
-    protected function reset(): void
-    {
-        $this->stack = [];
-        $this->inStr = false;
-        $this->objectPos = -1;
-        $this->arrayPos = -1;
     }
 
     protected function maybeLiteral($json)
@@ -178,6 +170,26 @@ class JsonFixer
         // @codeCoverageIgnoreStart
 
         // @codeCoverageIgnoreEnd
+    }
+
+    protected function padString($string): string
+    {
+        $last = substr($string, -1);
+        $last2 = substr($string, -2);
+
+        if ($last2 === '\"' || $last !== '"') {
+            return $string . '"';
+        }
+
+        return ''; // @codeCoverageIgnore
+    }
+
+    protected function reset(): void
+    {
+        $this->stack = [];
+        $this->inStr = false;
+        $this->objectPos = -1;
+        $this->arrayPos = -1;
     }
 
     protected function doFix($json)
@@ -216,6 +228,19 @@ class JsonFixer
         $this->updatePos($char, $index);
     }
 
+    protected function maybeStr($prev, $char, $index): bool
+    {
+        if ($prev !== '\\' && $char === '"') {
+            $this->inStr = ! $this->inStr;
+        }
+
+        if ($this->inStr && $this->lastToken() !== '"') {
+            $this->stack[$index] = '"';
+        }
+
+        return $this->inStr;
+    }
+
     protected function lastToken()
     {
         return end($this->stack);
@@ -241,19 +266,6 @@ class JsonFixer
                 break;
             }
         }
-    }
-
-    protected function maybeStr($prev, $char, $index)
-    {
-        if ($prev !== '\\' && $char === '"') {
-            $this->inStr = ! $this->inStr;
-        }
-
-        if ($this->inStr && $this->lastToken() !== '"') {
-            $this->stack[$index] = '"';
-        }
-
-        return $this->inStr;
     }
 
     protected function updatePos($char, int $index): void
@@ -302,17 +314,6 @@ class JsonFixer
         return substr($tmpJson, 0, -strlen($matches[1])) . $literal;
     }
 
-    protected function padStack($tmpJson)
-    {
-        foreach (array_reverse($this->stack, true) as $token) {
-            if (isset($this->pairs[$token])) {
-                $tmpJson .= $this->pairs[$token];
-            }
-        }
-
-        return $tmpJson;
-    }
-
     protected function padObject($tmpJson)
     {
         if (! $this->objectNeedsPadding($tmpJson)) {
@@ -346,18 +347,6 @@ class JsonFixer
         return ! $empty && $this->arrayPos < $this->objectPos;
     }
 
-    protected function padString($string)
-    {
-        $last = substr($string, -1);
-        $last2 = substr($string, -2);
-
-        if ($last2 === '\"' || $last !== '"') {
-            return $string . '"';
-        }
-
-        return ''; // @codeCoverageIgnore
-    }
-
     protected function padIf($string, $substr)
     {
         if (substr($string, -strlen($substr)) !== $substr) {
@@ -365,5 +354,16 @@ class JsonFixer
         }
 
         return $string;
+    }
+
+    protected function padStack($tmpJson)
+    {
+        foreach (array_reverse($this->stack, true) as $token) {
+            if (isset($this->pairs[$token])) {
+                $tmpJson .= $this->pairs[$token];
+            }
+        }
+
+        return $tmpJson;
     }
 }

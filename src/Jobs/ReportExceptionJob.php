@@ -19,6 +19,7 @@ use Hyperf\Context\ApplicationContext;
 use Hyperf\Pipeline\Pipeline;
 
 use function ELLa123\HyperfExceptionNotify\event;
+use function Hyperf\Config\config;
 
 class ReportExceptionJob
 {
@@ -42,20 +43,20 @@ class ReportExceptionJob
         $this->fireReportedEvent($result);
     }
 
-    protected function getChannelPipeline(): array
-    {
-        return \Hyperf\Config\config(
-            sprintf('exception_notify.channels.%s.sanitizers', $this->channel->getName()),
-            []
-        );
-    }
-
     protected function pipelineReport(string $report): string
     {
         return (new Pipeline(ApplicationContext::getContainer()))
             ->send($report)
             ->through($this->getChannelPipeline())
             ->then(static fn ($report) => $report);
+    }
+
+    protected function getChannelPipeline(): array
+    {
+        return config(
+            sprintf('exception_notify.channels.%s.sanitizers', $this->channel->getName()),
+            []
+        );
     }
 
     protected function fireReportingEvent(string $report): void

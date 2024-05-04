@@ -18,9 +18,6 @@ class RequestFileCollector extends Collector
 {
     public function __construct(protected RequestInterface $request) {}
 
-    /**
-     * @return array<mixed>
-     */
     public function collect(): array
     {
         $files = $this->request->getUploadedFiles();
