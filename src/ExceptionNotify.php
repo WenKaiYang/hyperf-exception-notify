@@ -92,6 +92,7 @@ class ExceptionNotify extends Manager
 
     public function onChannel(array|string $channels): self
     {
+        is_string($channels) && $channels = explode(',', $channels);
         foreach ((array) $channels as $channel) {
             $this->driver($channel);
         }
