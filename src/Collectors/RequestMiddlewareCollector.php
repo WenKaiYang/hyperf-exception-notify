@@ -19,9 +19,9 @@ class RequestMiddlewareCollector extends Collector
 {
     public function __construct(protected RequestInterface $request) {}
 
-    public function collect(): array
+    public function collect(): ?array
     {
         $dispatched = $this->request->getAttribute(Dispatched::class);
-        return is_null($dispatched->handler) ? [] : $dispatched->handler->options['middleware'];
+        return $dispatched->handler?->options['middleware'] ?? [];
     }
 }

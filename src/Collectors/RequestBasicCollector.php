@@ -54,8 +54,8 @@ class RequestBasicCollector extends Collector
         try {
             if (! is_null($dispatched->handler)) {
                 $data['route'] = $dispatched->handler->route;
-                $data['class'] = $dispatched->handler->callback[0];
-                $data['function'] = $dispatched->handler->callback[1];
+                $data['class'] = $dispatched->handler->callback[0] ?? [];
+                $data['function'] = $dispatched->handler->callback[1] ?? [];
             }
         } catch (Throwable $throwable) {
             stdoutLogger()->error('采集器异常: ' . $throwable->getMessage());
