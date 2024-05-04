@@ -15,10 +15,9 @@ namespace ELLa123\HyperfExceptionNotify\Jobs;
 use ELLa123\HyperfExceptionNotify\Channels\AbstractChannel;
 use ELLa123\HyperfExceptionNotify\Events\ReportedEvent;
 use ELLa123\HyperfExceptionNotify\Events\ReportingEvent;
-
-
 use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Pipeline;
+
 use function ELLa123\HyperfExceptionNotify\event;
 
 class ReportExceptionJob
@@ -43,20 +42,20 @@ class ReportExceptionJob
         $this->fireReportedEvent($result);
     }
 
-    protected function getChannelPipeline(): array
-    {
-        return config(
-            sprintf('exception_notify.channels.%s.sanitizers', $this->channel->getName()),
-            []
-        );
-    }
-
     protected function pipelineReport(string $report): string
     {
         return (new Pipeline(ApplicationContext::getContainer()))
             ->send($report)
             ->through($this->getChannelPipeline())
             ->then(static fn ($report) => $report);
+    }
+
+    protected function getChannelPipeline(): array
+    {
+        return config(
+            sprintf('exception_notify.channels.%s.sanitizers', $this->channel->getName()),
+            []
+        );
     }
 
     protected function fireReportingEvent(string $report): void

@@ -14,8 +14,8 @@ namespace ELLa123\HyperfExceptionNotify\Channels;
 
 use Guanguans\Notify\Contracts\MessageInterface;
 use Guanguans\Notify\Messages\DingTalk\TextMessage;
-use function ELLa123\HyperfExceptionNotify\array_filter_filled;
 
+use function ELLa123\HyperfExceptionNotify\array_filter_filled;
 
 class DingTalkChannel extends NotifyAbstractChannel
 {
@@ -28,5 +28,4 @@ class DingTalkChannel extends NotifyAbstractChannel
             'isAtAll' => config('exception-notify.channels.dingTalk.isAtAll'),
         ]));
     }
-
 }

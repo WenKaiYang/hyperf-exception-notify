@@ -16,9 +16,6 @@ use Throwable;
 
 trait ExceptionAwareTrait
 {
-    /**
-     * @var Throwable
-     */
     protected Throwable $exception;
 
     public function setException(Throwable $throwable): void

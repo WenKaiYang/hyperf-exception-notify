@@ -27,7 +27,7 @@ class ExceptionTraceCollector extends Collector implements ExceptionAwareContrac
     {
         return collect(explode("\n", $this->exception->getTraceAsString()))
             ->filter(static function ($trace) {
-                return !Str::contains($trace, 'vendor');
+                return ! Str::contains($trace, 'vendor');
             })
             ->all();
     }

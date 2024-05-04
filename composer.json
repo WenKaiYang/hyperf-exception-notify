@@ -1,65 +1,65 @@
 {
-    "name": "ella123/hyperf-exception-notify",
-    "type": "library",
-    "license": "MIT",
-    "keywords": [
-        "php",
-        "hyperf",
-        "hyperf2.2"
-    ],
-    "description": "hyperf exception notify",
-    "autoload": {
-        "psr-4": {
-            "ELLa123\\HyperfExceptionNotify\\": "src/"
-        },
-        "files": [
-            "helpers.php"
-        ]
+  "name": "ella123/hyperf-exception-notify",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "hyperf",
+    "hyperf2.2"
+  ],
+  "description": "hyperf exception notify",
+  "autoload": {
+    "psr-4": {
+      "ELLa123\\HyperfExceptionNotify\\": "src/"
     },
-    "autoload-dev": {
-        "psr-4": {
-            "HyperfTest\\": "tests"
-        }
-    },
-    "require": {
-        "php": ">=8.0",
-        "hyperf/framework": "~2.2",
-        "hyperf/di": "~2.2",
-        "guanguans/notify": "^1.25",
-        "hyperf/async-queue": "~2.2",
-        "hyperf/cache": "~2.2",
-        "hyperf/config": "~2.2",
-        "hyperf/exception-handler":  "~2.2",
-        "hyperf/http-server": "~2.2",
-        "hyperf/logger": "~2.2",
-        "hyperf/redis": "~2.2"
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.0",
-        "hyperf/command": "~2.2",
-        "mockery/mockery": "^1.0",
-        "phpstan/phpstan": "^1.0",
-        "phpunit/phpunit": "^10.0",
-        "swoole/ide-helper": "^4.5",
-        "symfony/var-dumper": "^6.0"
-    },
-    "suggest": {
-        "swow/swow": "Required to create swow components."
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "config": {
-        "optimize-autoloader": true,
-        "sort-packages": true
-    },
-    "scripts": {
-        "test": "phpunit -c phpunit.xml --colors=always",
-        "analyse": "phpstan analyse --memory-limit 1024M -l 0 ./src",
-        "cs-fix": "php-cs-fixer fix $1"
-    },
-    "extra": {
-        "hyperf": {
-            "config": "ELLa123\\HyperfExceptionNotify\\ConfigProvider"
-        }
+    "files": [
+      "helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "HyperfTest\\": "tests"
     }
+  },
+  "require": {
+    "php": ">=8.0",
+    "hyperf/framework": "~2.2",
+    "hyperf/di": "~2.2",
+    "guanguans/notify": "^1.25",
+    "hyperf/async-queue": "~2.2",
+    "hyperf/cache": "~2.2",
+    "hyperf/config": "~2.2",
+    "hyperf/exception-handler": "~2.2",
+    "hyperf/http-server": "~2.2",
+    "hyperf/logger": "~2.2",
+    "hyperf/redis": "~2.2"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.0",
+    "hyperf/command": "~2.2",
+    "mockery/mockery": "^1.0",
+    "phpstan/phpstan": "^1.0",
+    "phpunit/phpunit": "^10.0",
+    "swoole/ide-helper": "^4.5",
+    "symfony/var-dumper": "^6.0"
+  },
+  "suggest": {
+    "swow/swow": "Required to create swow components."
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "scripts": {
+    "test": "phpunit -c phpunit.xml --colors=always",
+    "analyse": "phpstan analyse --memory-limit 1024M -l 0 ./src",
+    "cs-fix": "php-cs-fixer fix $1"
+  },
+  "extra": {
+    "hyperf": {
+      "config": "ELLa123\\HyperfExceptionNotify\\ConfigProvider"
+    }
+  }
 }

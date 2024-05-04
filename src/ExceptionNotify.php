@@ -25,8 +25,8 @@ use Guanguans\Notify\Factory;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Utils\Arr;
 use Hyperf\Utils\Str;
+use RedisException;
 use Throwable;
-
 
 class ExceptionNotify extends Manager
 {
@@ -54,7 +54,7 @@ class ExceptionNotify extends Manager
     }
 
     /**
-     * @throws \RedisException
+     * @throws RedisException
      */
     public function shouldntReport(Throwable $throwable): bool
     {
@@ -80,6 +80,9 @@ class ExceptionNotify extends Manager
         );
     }
 
+    /**
+     * @throws RedisException
+     */
     public function shouldReport(Throwable $throwable): bool
     {
         return ! $this->shouldntReport($throwable);
@@ -90,9 +93,10 @@ class ExceptionNotify extends Manager
         return config('exception_notify.default');
     }
 
-    public function onChannel(...$channels): self
+    public function onChannel(array|string $channels): self
     {
-        foreach ($channels as $channel) {
+        is_string($channels) && $channels = explode(',', $channels);
+        foreach ((array) $channels as $channel) {
             $this->driver($channel);
         }
         return $this;

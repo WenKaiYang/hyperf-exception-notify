@@ -15,6 +15,7 @@ namespace ELLa123\HyperfExceptionNotify\Support;
 use Closure;
 use Hyperf\Redis\Redis;
 use Hyperf\Utils\InteractsWithTime;
+use RedisException;
 
 class RateLimiter
 {
@@ -52,7 +53,7 @@ class RateLimiter
 
     /**
      * Attempts to execute a callback if it's not limited.
-     * @throws \RedisException
+     * @throws RedisException
      */
     public function attempt(string $key, int $maxAttempts, Closure $callback, int $decaySeconds = 60): mixed
     {
@@ -67,7 +68,7 @@ class RateLimiter
 
     /**
      * Determine if the given key has been "accessed" too many times.
-     * @throws \RedisException
+     * @throws RedisException
      */
     public function tooManyAttempts(string $key, int $maxAttempts): bool
     {
@@ -83,8 +84,38 @@ class RateLimiter
     }
 
     /**
+     * Get the number of attempts for the given key.
+     * @throws RedisException
+     */
+    public function attempts(string $key): int
+    {
+        $key = $this->cleanRateLimiterKey($key);
+
+        return (int) $this->redis->get($key);
+    }
+
+    /**
+     * Clean the rate limiter key from unicode characters.
+     */
+    public function cleanRateLimiterKey(string $key): string
+    {
+        return preg_replace('/&([a-z])[a-z]+;/i', '$1', htmlentities($key));
+    }
+
+    /**
+     * Reset the number of attempts for the given key.
+     * @throws RedisException
+     */
+    public function resetAttempts(string $key): int
+    {
+        $key = $this->cleanRateLimiterKey($key);
+
+        return $this->redis->del($key);
+    }
+
+    /**
      * Increment the counter for a given key for a given decay time.
-     * @throws \RedisException
+     * @throws RedisException
      */
     public function hit(string $key, int $decaySeconds = 60): int
     {
@@ -103,25 +134,11 @@ class RateLimiter
     }
 
     /**
-     * Get the number of attempts for the given key.
-     * @throws \RedisException
+     * Get the number of retries left for the given key.
      */
-    public function attempts(string $key): int
+    public function retriesLeft(string $key, int $maxAttempts): int
     {
-        $key = $this->cleanRateLimiterKey($key);
-
-        return (int) $this->redis->get($key);
-    }
-
-    /**
-     * Reset the number of attempts for the given key.
-     * @throws \RedisException
-     */
-    public function resetAttempts(string $key): int
-    {
-        $key = $this->cleanRateLimiterKey($key);
-
-        return $this->redis->del($key);
+        return $this->remaining($key, $maxAttempts);
     }
 
     /**
@@ -137,16 +154,8 @@ class RateLimiter
     }
 
     /**
-     * Get the number of retries left for the given key.
-     */
-    public function retriesLeft(string $key, int $maxAttempts): int
-    {
-        return $this->remaining($key, $maxAttempts);
-    }
-
-    /**
      * Clear the hits and lockout timer for the given key.
-     * @throws \RedisException
+     * @throws RedisException
      */
     public function clear(string $key): void
     {
@@ -165,13 +174,5 @@ class RateLimiter
         $key = $this->cleanRateLimiterKey($key);
 
         return max(0, $this->redis->get($key . ':timer') - $this->currentTime());
-    }
-
-    /**
-     * Clean the rate limiter key from unicode characters.
-     */
-    public function cleanRateLimiterKey(string $key): string
-    {
-        return preg_replace('/&([a-z])[a-z]+;/i', '$1', htmlentities($key));
     }
 }
