@@ -4,7 +4,8 @@
     "license": "MIT",
     "keywords": [
         "php",
-        "hyperf"
+        "hyperf",
+        "hyperf3.1"
     ],
     "description": "hyperf exception notify",
     "autoload": {
@@ -27,7 +28,7 @@
         "hyperf/cache": "^3.1",
         "hyperf/config": "^3.1",
         "hyperf/di": "^3.1",
-        "hyperf/exception-handler": "^3.0",
+        "hyperf/exception-handler": "^3.1",
         "hyperf/framework": "^3.1",
         "hyperf/http-server": "^3.1",
         "hyperf/logger": "^3.1",
