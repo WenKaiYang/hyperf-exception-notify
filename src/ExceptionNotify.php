@@ -90,9 +90,9 @@ class ExceptionNotify extends Manager
         return config('exception_notify.default');
     }
 
-    public function onChannel(...$channels): self
+    public function onChannel(array|string $channels): self
     {
-        foreach ($channels as $channel) {
+        foreach ((array) $channels as $channel) {
             $this->driver($channel);
         }
         return $this;

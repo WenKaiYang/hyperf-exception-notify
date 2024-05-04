@@ -24,3 +24,8 @@ dingTalk 钉钉群机器人
 weWork 企业微信群机器人
 feiShu 飞书群机器人
 ```
+
+## 使用案例
+```shell
+exception_notify_report(exception: $throwable, channels: 'log',);
+```

@@ -67,10 +67,8 @@ abstract class Manager
 
     /**
      * Get all of the created "drivers".
-     *
-     * @return array
      */
-    public function getDrivers()
+    public function getDrivers(): array
     {
         return $this->drivers;
     }
@@ -80,7 +78,7 @@ abstract class Manager
      *
      * @return $this
      */
-    public function forgetDrivers()
+    public function forgetDrivers(): static
     {
         $this->drivers = [];
 

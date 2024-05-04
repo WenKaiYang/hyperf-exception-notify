@@ -56,11 +56,10 @@ class CollectorManager extends Fluent
      * @noinspection MissingParentCallInspection
      *
      * @param array-key $offset
-     * @param mixed $value
      *
      * @throws InvalidArgumentException
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, mixed $value): void
     {
         if (! $value instanceof CollectorContract) {
             throw new InvalidArgumentException(sprintf('Collector must be instance of %s', CollectorContract::class));
