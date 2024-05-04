@@ -36,7 +36,7 @@ class CommandFailToHandleListener implements ListenerInterface
      */
     public function process(object $event): void
     {
-        $channels = \Hyperf\Collection\collect(\Hyperf\Config\config('exception_notify.channels'))->keys();
+        $channels = collect(config('exception_notify.channels'))->keys();
 
         if (empty($channels)) {
             return;

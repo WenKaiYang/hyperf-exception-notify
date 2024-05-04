@@ -14,19 +14,13 @@ namespace ELLa123\HyperfExceptionNotify;
 
 use Countable;
 use Exception;
-use Hyperf\Collection\Arr;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\Utils\Arr;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
 
-use function Hyperf\Support\make;
-use function Hyperf\Support\value;
-
-/**
- * Determine if the given value is "blank".
- */
 function blank(mixed $value): bool
 {
     if (is_null($value)) {
@@ -50,12 +44,11 @@ function blank(mixed $value): bool
 
 function array_filter_filled(array $array): array
 {
-    return array_filter($array, static fn ($item) => ! blank($item));
+    return array_filter($array, static function ($item) {
+        return !blank($item);
+    });
 }
 
-/**
- * @return null|string|void
- */
 function var_output(mixed $expression, bool $return = false)
 {
     $patterns = [
@@ -88,33 +81,21 @@ function exception_notify_report($exception, ...$channels): void
     make(ExceptionNotify::class)->onChannel(...$channels)->report($exception);
 }
 
-/**
- * StdoutLogger.
- */
 function stdoutLogger(): StdoutLoggerInterface
 {
     return make(StdoutLoggerInterface::class);
 }
 
-/**
- * 获取缓存驱动.
- */
 function cache()
 {
     return make(CacheInterface::class);
 }
 
-/**
- * 触发事件.
- */
 function event(object $event): void
 {
     make(EventDispatcherInterface::class)->dispatch($event);
 }
 
-/**
- * 获取真实ip.
- */
 function real_ip(mixed $request = null): mixed
 {
     $request = $request ?? make(RequestInterface::class);

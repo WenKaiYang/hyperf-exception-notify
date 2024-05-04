@@ -19,7 +19,7 @@ trait ExceptionAwareTrait
     /**
      * @var Throwable
      */
-    protected $exception;
+    protected Throwable $exception;
 
     public function setException(Throwable $throwable): void
     {

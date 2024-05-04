@@ -20,8 +20,8 @@ class ApplicationCollector extends Collector
     public function collect(): array
     {
         return [
-            'name' => \Hyperf\Support\env('APP_NAME'),
-            'environment' => \Hyperf\Support\env('APP_ENV'),
+            'name' => env('APP_NAME'),
+            'environment' => env('APP_ENV'),
         ];
     }
 }

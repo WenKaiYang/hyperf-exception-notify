@@ -14,9 +14,8 @@ namespace ELLa123\HyperfExceptionNotify\Channels;
 
 use Guanguans\Notify\Contracts\MessageInterface;
 use Guanguans\Notify\Messages\WeWork\TextMessage;
-
 use function ELLa123\HyperfExceptionNotify\array_filter_filled;
-use function Hyperf\Config\config;
+
 
 class WeWorkChannel extends NotifyAbstractChannel
 {

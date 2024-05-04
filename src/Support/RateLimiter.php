@@ -14,7 +14,7 @@ namespace ELLa123\HyperfExceptionNotify\Support;
 
 use Closure;
 use Hyperf\Redis\Redis;
-use Hyperf\Support\Traits\InteractsWithTime;
+use Hyperf\Utils\InteractsWithTime;
 
 class RateLimiter
 {
@@ -52,6 +52,7 @@ class RateLimiter
 
     /**
      * Attempts to execute a callback if it's not limited.
+     * @throws \RedisException
      */
     public function attempt(string $key, int $maxAttempts, Closure $callback, int $decaySeconds = 60): mixed
     {
@@ -59,13 +60,14 @@ class RateLimiter
             return false;
         }
 
-        return \Hyperf\Tappable\tap($callback() ?: true, function () use ($key, $decaySeconds) {
+        return tap($callback() ?: true, function () use ($key, $decaySeconds) {
             $this->hit($key, $decaySeconds);
         });
     }
 
     /**
      * Determine if the given key has been "accessed" too many times.
+     * @throws \RedisException
      */
     public function tooManyAttempts(string $key, int $maxAttempts): bool
     {
@@ -82,6 +84,7 @@ class RateLimiter
 
     /**
      * Increment the counter for a given key for a given decay time.
+     * @throws \RedisException
      */
     public function hit(string $key, int $decaySeconds = 60): int
     {
@@ -101,6 +104,7 @@ class RateLimiter
 
     /**
      * Get the number of attempts for the given key.
+     * @throws \RedisException
      */
     public function attempts(string $key): int
     {
@@ -111,6 +115,7 @@ class RateLimiter
 
     /**
      * Reset the number of attempts for the given key.
+     * @throws \RedisException
      */
     public function resetAttempts(string $key): int
     {
@@ -141,8 +146,9 @@ class RateLimiter
 
     /**
      * Clear the hits and lockout timer for the given key.
+     * @throws \RedisException
      */
-    public function clear(string $key)
+    public function clear(string $key): void
     {
         $key = $this->cleanRateLimiterKey($key);
 

@@ -15,7 +15,7 @@ namespace ELLa123\HyperfExceptionNotify;
 use ELLa123\HyperfExceptionNotify\Contracts\CollectorContract;
 use ELLa123\HyperfExceptionNotify\Contracts\ExceptionAwareContract;
 use ELLa123\HyperfExceptionNotify\Exceptions\InvalidArgumentException;
-use Hyperf\Support\Fluent;
+use Hyperf\Utils\Fluent;
 use Throwable;
 
 class CollectorManager extends Fluent
@@ -32,12 +32,12 @@ class CollectorManager extends Fluent
      */
     public function __construct()
     {
-        $collectors = \Hyperf\Collection\collect(\Hyperf\Config\config('exception_notify.collector'))
+        $collectors = collect(config('exception_notify.collector'))
             ->map(function ($parameters, $class) {
                 if (! is_array($parameters)) {
                     [$parameters, $class] = [[], $parameters];
                 }
-                return \Hyperf\Support\make($class, $parameters);
+                return make($class, $parameters);
             })
             ->values()
             ->all();
@@ -67,7 +67,7 @@ class CollectorManager extends Fluent
 
     public function toReport(Throwable $throwable): string
     {
-        return \Hyperf\Collection\collect($this)
+        return collect($this)
             ->mapWithKeys(static function (CollectorContract $collector) use ($throwable): array {
                 $collector instanceof ExceptionAwareContract and $collector->setException($throwable);
 

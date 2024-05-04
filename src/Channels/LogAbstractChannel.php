@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace ELLa123\HyperfExceptionNotify\Channels;
 
+
 use function ELLa123\HyperfExceptionNotify\stdoutLogger;
 
 class LogAbstractChannel extends AbstractChannel

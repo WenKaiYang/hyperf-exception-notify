@@ -27,8 +27,6 @@ use ELLa123\HyperfExceptionNotify\Sanitizers\AppendContentSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\FixPrettyJsonSanitizer;
 use ELLa123\HyperfExceptionNotify\Sanitizers\LengthLimitSanitizer;
 
-use function Hyperf\Support\env;
-
 return [
     /*
     |--------------------------------------------------------------------------

@@ -19,7 +19,7 @@ class RequestFileCollector extends Collector
     public function __construct(protected RequestInterface $request) {}
 
     /**
-     * @return array<mixed>
+     * @return array
      */
     public function collect(): array
     {

@@ -14,7 +14,7 @@ namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use ELLa123\HyperfExceptionNotify\Contracts\ExceptionAwareContract;
 use ELLa123\HyperfExceptionNotify\Traits\ExceptionAwareTrait;
-use Hyperf\Stringable\Str;
+use Hyperf\Utils\Str;
 
 class ExceptionTraceCollector extends Collector implements ExceptionAwareContract
 {
@@ -23,10 +23,12 @@ class ExceptionTraceCollector extends Collector implements ExceptionAwareContrac
     /**
      * @return string[]
      */
-    public function collect()
+    public function collect(): array
     {
-        return \Hyperf\Collection\collect(explode("\n", $this->exception->getTraceAsString()))
-            ->filter(static fn ($trace) => ! Str::contains($trace, 'vendor'))
+        return collect(explode("\n", $this->exception->getTraceAsString()))
+            ->filter(static function ($trace) {
+                return !Str::contains($trace, 'vendor');
+            })
             ->all();
     }
 }

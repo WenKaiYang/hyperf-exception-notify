@@ -13,12 +13,12 @@ declare(strict_types=1);
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use ELLa123\HyperfExceptionNotify\Contracts\CollectorContract;
-use Hyperf\Stringable\Str;
+use Hyperf\Utils\Str;
 
 abstract class Collector implements CollectorContract
 {
     public function name(): string
     {
-        return ucwords(Str::snake(Str::beforeLast(\Hyperf\Support\class_basename($this), 'Collector'), ' '));
+        return ucwords(Str::snake(Str::beforeLast(class_basename($this), 'Collector'), ' '));
     }
 }

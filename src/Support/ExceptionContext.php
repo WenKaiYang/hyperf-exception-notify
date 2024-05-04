@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace ELLa123\HyperfExceptionNotify\Support;
 
-use Hyperf\Collection\Collection;
-use Hyperf\Stringable\Str;
+use Hyperf\Utils\Collection;
+use Hyperf\Utils\Str;
 use Throwable;
 
 /**
@@ -26,7 +26,7 @@ class ExceptionContext
      */
     public static function getFormattedContext(Throwable $throwable): array
     {
-        return \Hyperf\Collection\collect(static::get($throwable))
+        return collect(static::get($throwable))
             ->tap(static function (Collection $collection) use ($throwable, &$exceptionLine, &$markedExceptionLine, &$maxLineLen): void {
                 $exceptionLine = $throwable->getLine();
                 $markedExceptionLine = sprintf('➤ %s', $exceptionLine);
@@ -66,9 +66,11 @@ class ExceptionContext
      */
     protected static function getFileContext(Throwable $throwable): array
     {
-        return \Hyperf\Collection\collect(explode("\n", file_get_contents($throwable->getFile())))
+        return collect(explode("\n", file_get_contents($throwable->getFile())))
             ->slice($throwable->getLine() - 10, 20)
-            ->mapWithKeys(static fn ($value, $key): array => [$key + 1 => $value])
+            ->mapWithKeys(static function ($value, $key): array {
+                return [$key + 1 => $value];
+            })
             ->all();
     }
 }

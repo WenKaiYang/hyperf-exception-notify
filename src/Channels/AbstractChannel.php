@@ -13,13 +13,14 @@ declare(strict_types=1);
 namespace ELLa123\HyperfExceptionNotify\Channels;
 
 use ELLa123\HyperfExceptionNotify\Contracts\ChannelContract;
-use Hyperf\Stringable\Str;
+
+use Hyperf\Utils\Str;
 
 abstract class AbstractChannel implements ChannelContract
 {
     public function getName(): string
     {
-        return Str::lower(Str::beforeLast(\Hyperf\Support\class_basename($this), 'AbstractChannel'));
+        return Str::lower(Str::beforeLast(class_basename($this), 'AbstractChannel'));
     }
 
     abstract public function report(string $report);

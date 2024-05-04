@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace ELLa123\HyperfExceptionNotify\Support;
 
-use Hyperf\Stringable\Str;
+use Hyperf\Utils\Str;
 use InvalidArgumentException;
 
 abstract class Manager
@@ -70,7 +70,7 @@ abstract class Manager
      *
      * @return array
      */
-    public function getDrivers()
+    public function getDrivers(): array
     {
         return $this->drivers;
     }
@@ -80,7 +80,7 @@ abstract class Manager
      *
      * @return $this
      */
-    public function forgetDrivers()
+    public function forgetDrivers(): static
     {
         $this->drivers = [];
 

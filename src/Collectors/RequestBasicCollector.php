@@ -45,7 +45,7 @@ class RequestBasicCollector extends Collector
             'action' => $this->request->getRequestTarget(),
             'class' => '',
             'function' => '',
-            'duration' => \Hyperf\Support\value(function () use ($request) {
+            'duration' => value(function () use ($request) {
                 $startTime = $request->server('request_time_float');
                 return floor((microtime(true) - $startTime) * 1000) . 'ms';
             }),

@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
-use Hyperf\Context\ApplicationContext;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Exception\InvalidDefinitionException;
+use Hyperf\Utils\ApplicationContext;
 
 class RequestSessionCollector extends Collector
 {

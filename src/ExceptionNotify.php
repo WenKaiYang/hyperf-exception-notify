@@ -22,12 +22,11 @@ use ELLa123\HyperfExceptionNotify\Jobs\ReportExceptionJob;
 use ELLa123\HyperfExceptionNotify\Support\Manager;
 use ELLa123\HyperfExceptionNotify\Support\RateLimiter;
 use Guanguans\Notify\Factory;
-use Hyperf\Collection\Arr;
 use Hyperf\Contract\ConfigInterface;
-use Hyperf\Stringable\Str;
+use Hyperf\Utils\Arr;
+use Hyperf\Utils\Str;
 use Throwable;
 
-use function Hyperf\Config\config;
 
 class ExceptionNotify extends Manager
 {
@@ -39,7 +38,7 @@ class ExceptionNotify extends Manager
 
     public function reportIf($condition, Throwable $throwable): void
     {
-        \Hyperf\Collection\value($condition) and $this->report($throwable);
+        value($condition) and $this->report($throwable);
     }
 
     public function report(Throwable $throwable): void
@@ -54,13 +53,16 @@ class ExceptionNotify extends Manager
         }
     }
 
+    /**
+     * @throws \RedisException
+     */
     public function shouldntReport(Throwable $throwable): bool
     {
         if (! $this->config->get('exception_notify.enabled')) {
             return true;
         }
 
-        if (! Str::is($this->config->get('exception_notify.env'), (string) \Hyperf\Support\env('APP_ENV'))) {
+        if (! Str::is($this->config->get('exception_notify.env'), (string) env('APP_ENV'))) {
             return true;
         }
 

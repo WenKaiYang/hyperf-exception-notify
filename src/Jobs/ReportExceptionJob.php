@@ -15,9 +15,10 @@ namespace ELLa123\HyperfExceptionNotify\Jobs;
 use ELLa123\HyperfExceptionNotify\Channels\AbstractChannel;
 use ELLa123\HyperfExceptionNotify\Events\ReportedEvent;
 use ELLa123\HyperfExceptionNotify\Events\ReportingEvent;
-use Hyperf\Context\ApplicationContext;
-use Hyperf\Pipeline\Pipeline;
 
+
+use Hyperf\Utils\ApplicationContext;
+use Hyperf\Utils\Pipeline;
 use function ELLa123\HyperfExceptionNotify\event;
 
 class ReportExceptionJob
@@ -44,7 +45,7 @@ class ReportExceptionJob
 
     protected function getChannelPipeline(): array
     {
-        return \Hyperf\Config\config(
+        return config(
             sprintf('exception_notify.channels.%s.sanitizers', $this->channel->getName()),
             []
         );
