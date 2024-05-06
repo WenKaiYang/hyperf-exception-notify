@@ -45,7 +45,7 @@ function blank(mixed $value): bool
 function array_filter_filled(array $array): array
 {
     return array_filter($array, static function ($item) {
-        return !blank($item);
+        return ! blank($item);
     });
 }
 
@@ -69,12 +69,12 @@ function var_output(mixed $expression, bool $return = false)
     echo $export;
 }
 
-function exception_notify_report_if(mixed $condition, mixed $exception, array|string|null $channels = null): void
+function exception_notify_report_if(mixed $condition, mixed $exception, null|array|string $channels = null): void
 {
     value($condition) and exception_notify_report($exception, $channels);
 }
 
-function exception_notify_report(mixed $exception, array|string|null $channels = null): void
+function exception_notify_report(mixed $exception, null|array|string $channels = null): void
 {
     $exception instanceof Throwable or $exception = new Exception($exception);
 
