@@ -26,7 +26,6 @@ use Hyperf\Collection\Arr;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Stringable\Str;
 use Throwable;
-
 use function Hyperf\Collection\value;
 use function Hyperf\Config\config;
 use function Hyperf\Support\env;
@@ -37,7 +36,8 @@ class ExceptionNotify extends Manager
         protected CollectorManager $collectorManager,
         protected ConfigInterface $config,
         protected RateLimiter $rateLimiter
-    ) {}
+    ) {
+    }
 
     public function reportIf($condition, Throwable $throwable): void
     {
@@ -58,11 +58,11 @@ class ExceptionNotify extends Manager
 
     public function shouldntReport(Throwable $throwable): bool
     {
-        if (! $this->config->get('exception_notify.enabled')) {
+        if (!$this->config->get('exception_notify.enabled')) {
             return true;
         }
 
-        if (! Str::is($this->config->get('exception_notify.env'), (string) env('APP_ENV'))) {
+        if (!Str::is($this->config->get('exception_notify.env'), (string) env('APP_ENV'))) {
             return true;
         }
 
@@ -72,31 +72,12 @@ class ExceptionNotify extends Manager
             }
         }
 
-        return ! $this->rateLimiter->attempt(
-            md5($throwable->getFile() . $throwable->getLine() . $throwable->getCode() . $throwable->getMessage() . $throwable->getTraceAsString()),
+        return !$this->rateLimiter->attempt(
+            md5($throwable->getFile().$throwable->getLine().$throwable->getCode().$throwable->getMessage().$throwable->getTraceAsString()),
             config('exception_notify.rate_limiter.max_attempts'),
-            static fn (): bool => true,
+            static fn(): bool => true,
             config('exception_notify.rate_limiter.decay_seconds')
         );
-    }
-
-    public function shouldReport(Throwable $throwable): bool
-    {
-        return ! $this->shouldntReport($throwable);
-    }
-
-    public function getDefaultDriver(): string
-    {
-        return config('exception_notify.default');
-    }
-
-    public function onChannel(array|string $channels): self
-    {
-        is_string($channels) && $channels = explode(',', $channels);
-        foreach ((array) $channels as $channel) {
-            $this->driver($channel);
-        }
-        return $this;
     }
 
     protected function dispatchReportExceptionJob(Throwable $throwable): void
@@ -108,6 +89,25 @@ class ExceptionNotify extends Manager
         foreach ($drivers as $driver) {
             (new ReportExceptionJob($driver, $report))->handle();
         }
+    }
+
+    public function shouldReport(Throwable $throwable): bool
+    {
+        return !$this->shouldntReport($throwable);
+    }
+
+    public function getDefaultDriver(): string
+    {
+        return config('exception_notify.default');
+    }
+
+    public function onChannel(array|string $channels = null): self
+    {
+        is_string($channels) && $channels = explode(',', $channels);
+        foreach ((array) $channels as $channel) {
+            $this->driver($channel);
+        }
+        return $this;
     }
 
     protected function createLogDriver(): LogAbstractChannel
