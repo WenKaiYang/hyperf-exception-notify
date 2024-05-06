@@ -20,6 +20,7 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\SimpleCache\CacheInterface;
 use Throwable;
+
 use function Hyperf\Support\make;
 use function Hyperf\Support\value;
 
@@ -49,7 +50,7 @@ function blank(mixed $value): bool
 
 function array_filter_filled(array $array): array
 {
-    return array_filter($array, static fn($item) => !blank($item));
+    return array_filter($array, static fn ($item) => ! blank($item));
 }
 
 /**
@@ -75,12 +76,12 @@ function var_output(mixed $expression, bool $return = false)
     echo $export;
 }
 
-function exception_notify_report_if(mixed $condition, mixed $exception, array|string $channels = null): void
+function exception_notify_report_if(mixed $condition, mixed $exception, null|array|string $channels = null): void
 {
     value($condition) and exception_notify_report($exception, $channels);
 }
 
-function exception_notify_report(mixed $exception, array|string $channels = null): void
+function exception_notify_report(mixed $exception, null|array|string $channels = null): void
 {
     $exception instanceof Throwable or $exception = new Exception($exception);
 
