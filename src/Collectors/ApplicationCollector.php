@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
-use function Hyperf\Support\env;
+use function Hyperf\Config\config;
 
 class ApplicationCollector extends Collector
 {
@@ -22,8 +22,10 @@ class ApplicationCollector extends Collector
     public function collect(): array
     {
         return [
-            'name' => env('APP_NAME'),
-            'environment' => env('APP_ENV'),
+            'name' => config('app_name'),
+            'version' => config('app_version'),
+            'environment' => config('app_env'),
+            'scan_cacheable' => config('scan_cacheable'),
         ];
     }
 }
