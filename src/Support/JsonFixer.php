@@ -120,8 +120,6 @@ class JsonFixer
         return $this->padStack($tmpJson);
     }
 
-    // trait PadsJson
-
     protected function trim($json): array
     {
         preg_match('/^(\s*)([^\s]+)(\s*)$/', $json, $match);
@@ -133,6 +131,8 @@ class JsonFixer
 
         return $match;
     }
+
+    // trait PadsJson
 
     protected function isValid($json): bool
     {
