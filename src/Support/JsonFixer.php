@@ -132,8 +132,6 @@ class JsonFixer
         return $match;
     }
 
-    // trait PadsJson
-
     protected function isValid($json): bool
     {
         // @psalm-suppress UnusedFunctionCall
@@ -141,6 +139,8 @@ class JsonFixer
 
         return json_last_error() === JSON_ERROR_NONE;
     }
+
+    // trait PadsJson
 
     protected function quickFix($json): ?string
     {

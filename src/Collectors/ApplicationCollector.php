@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use function Hyperf\Config\config;
+use function Hyperf\Support\env;
 
 class ApplicationCollector extends Collector
 {
@@ -22,10 +23,11 @@ class ApplicationCollector extends Collector
     public function collect(): array
     {
         return [
-            'name' => config('app_name'),
-            'version' => config('app_version'),
-            'environment' => config('app_env'),
-            'scan_cacheable' => config('scan_cacheable'),
+            'name' => config('app_name', env('APP_NAME')),
+            'version' => config('app_version', env('APP_VERSION')),
+            'environment' => config('app_env', env('APP_ENV')),
+            'scan_cacheable' => env('SCAN_CACHEABLE'),
+            'locale' => env('APP_LOCALE'),
         ];
     }
 }
