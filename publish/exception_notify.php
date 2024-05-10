@@ -12,7 +12,6 @@ declare(strict_types=1);
 use ELLa123\HyperfExceptionNotify\Collectors\ApplicationCollector;
 use ELLa123\HyperfExceptionNotify\Collectors\ChoreCollector;
 use ELLa123\HyperfExceptionNotify\Collectors\ExceptionBasicCollector;
-use ELLa123\HyperfExceptionNotify\Collectors\ExceptionContextCollector;
 use ELLa123\HyperfExceptionNotify\Collectors\ExceptionTraceCollector;
 use ELLa123\HyperfExceptionNotify\Collectors\PhpInfoCollector;
 use ELLa123\HyperfExceptionNotify\Collectors\RequestBasicCollector;
@@ -93,7 +92,6 @@ return [
         PhpInfoCollector::class,
         ChoreCollector::class,
         ExceptionBasicCollector::class,
-        ExceptionContextCollector::class,
         ExceptionTraceCollector::class,
         RequestBasicCollector::class,
         RequestSessionCollector::class,
