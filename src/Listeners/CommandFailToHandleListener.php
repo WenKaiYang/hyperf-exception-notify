@@ -18,6 +18,8 @@ use ELLa123\HyperfExceptionNotify\ExceptionNotify;
 use Hyperf\Command\Event\FailToHandle;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\Event\Contract\ListenerInterface;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 use function Hyperf\Collection\collect;
 use function Hyperf\Config\config;
@@ -35,7 +37,8 @@ class CommandFailToHandleListener implements ListenerInterface
     }
 
     /**
-     * @param FailToHandle $event
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function process(object $event): void
     {

@@ -25,8 +25,12 @@ use Guanguans\Notify\Factory;
 use Hyperf\Collection\Arr;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Stringable\Str;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
+use function Ella123\HyperfUtils\arrayFilterFilled;
+use function Ella123\HyperfUtils\stdoutLogger;
 use function Hyperf\Collection\value;
 use function Hyperf\Config\config;
 use function Hyperf\Support\env;
@@ -39,11 +43,20 @@ class ExceptionNotify extends Manager
         protected RateLimiter $rateLimiter
     ) {}
 
+    /**
+     * @param mixed $condition
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function reportIf($condition, Throwable $throwable): void
     {
         value($condition) and $this->report($throwable);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function report(Throwable $throwable): void
     {
         try {
@@ -121,7 +134,7 @@ class ExceptionNotify extends Manager
     protected function createFeiShuDriver(): FeiShuChannel
     {
         return new FeiShuChannel(
-            Factory::feiShu(array_filter_filled([
+            Factory::feiShu(arrayFilterFilled([
                 'token' => config('exception_notify.channels.feiShu.token'),
                 'secret' => config('exception_notify.channels.feiShu.secret'),
             ]))
@@ -131,7 +144,7 @@ class ExceptionNotify extends Manager
     protected function createDingTalkDriver(): DingTalkChannel
     {
         return new DingTalkChannel(
-            Factory::DingTalk(array_filter_filled([
+            Factory::DingTalk(arrayFilterFilled([
                 'token' => config('exception_notify.channels.dingTalk.token'),
                 'secret' => config('exception_notify.channels.dingTalk.secret'),
             ]))
@@ -140,7 +153,7 @@ class ExceptionNotify extends Manager
 
     protected function createWeWorkChannel(): WeWorkChannel
     {
-        return new WeWorkChannel(Factory::weWork(array_filter_filled([
+        return new WeWorkChannel(Factory::weWork(arrayFilterFilled([
             'token' => config('exception_notify.channels.weWork.token'),
             'secret' => config('exception_notify.channels.weWork.secret'),
         ])));

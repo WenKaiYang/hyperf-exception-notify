@@ -16,10 +16,12 @@ namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Router\Dispatched;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
-use function ELLa123\HyperfExceptionNotify\real_ip;
-use function ELLa123\HyperfExceptionNotify\stdoutLogger;
+use function Ella123\HyperfUtils\realIp;
+use function ELLa123\HyperfUtils\stdoutLogger;
 use function Hyperf\Support\value;
 
 class RequestBasicCollector extends Collector
@@ -27,10 +29,9 @@ class RequestBasicCollector extends Collector
     public function __construct(protected RequestInterface $request) {}
 
     /**
-     * @psalm-suppress InvalidScalarArgument
-     * @psalm-suppress InvalidArgument
-     *
      * @return array{url: string, ip: null|string, method: string, action: mixed, duration: string}
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function collect(): array
     {
@@ -40,7 +41,7 @@ class RequestBasicCollector extends Collector
 
         $data = [
             'url' => $this->request->fullUrl(),
-            'ip' => real_ip(),
+            'ip' => realIp(),
             'method' => $this->request->getMethod(),
             'route' => '',
             'action' => $this->request->getRequestTarget(),

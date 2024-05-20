@@ -14,16 +14,17 @@ namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\Context\ApplicationContext;
 use Hyperf\Contract\SessionInterface;
-use Hyperf\Di\Exception\InvalidDefinitionException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class RequestSessionCollector extends Collector
 {
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function collect(): array
     {
-        try {
-            return ApplicationContext::getContainer()->get(SessionInterface::class)->all();
-        } catch (InvalidDefinitionException $throwable) {
-            return [];
-        }
+        return ApplicationContext::getContainer()->get(SessionInterface::class)->all();
     }
 }

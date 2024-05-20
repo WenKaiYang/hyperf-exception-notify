@@ -23,6 +23,7 @@
     },
     "require": {
         "php": ">=8.2",
+        "ella123/hyperf-utils": "^3.1",
         "guanguans/notify": "^1.25",
         "hyperf/async-queue": "^3.1",
         "hyperf/cache": "^3.1",

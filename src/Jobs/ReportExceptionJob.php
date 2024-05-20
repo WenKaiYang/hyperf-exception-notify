@@ -17,8 +17,10 @@ use ELLa123\HyperfExceptionNotify\Events\ReportedEvent;
 use ELLa123\HyperfExceptionNotify\Events\ReportingEvent;
 use Hyperf\Context\ApplicationContext;
 use Hyperf\Pipeline\Pipeline;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-use function ELLa123\HyperfExceptionNotify\event;
+use function ELLa123\HyperfUtils\event;
 use function Hyperf\Config\config;
 
 class ReportExceptionJob
@@ -36,6 +38,10 @@ class ReportExceptionJob
         $this->pipedReport = $this->pipelineReport($report);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function handle(): void
     {
         $this->fireReportingEvent($this->pipedReport);
@@ -59,11 +65,20 @@ class ReportExceptionJob
         );
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     protected function fireReportingEvent(string $report): void
     {
         event(new ReportingEvent($this->channel, $report));
     }
 
+    /**
+     * @param mixed $result
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     protected function fireReportedEvent($result): void
     {
         event(new ReportedEvent($this->channel, $result));

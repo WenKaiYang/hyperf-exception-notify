@@ -12,7 +12,10 @@ declare(strict_types=1);
 
 namespace ELLa123\HyperfExceptionNotify\Channels;
 
-use function ELLa123\HyperfExceptionNotify\stdoutLogger;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+
+use function ELLa123\HyperfUtils\stdoutLogger;
 
 class LogAbstractChannel extends AbstractChannel
 {
@@ -26,6 +29,10 @@ class LogAbstractChannel extends AbstractChannel
         $this->level = $level;
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function report(string $report): void
     {
         stdoutLogger()->{$this->level}($report);

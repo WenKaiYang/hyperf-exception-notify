@@ -15,14 +15,14 @@ namespace ELLa123\HyperfExceptionNotify\Channels;
 use Guanguans\Notify\Contracts\MessageInterface;
 use Guanguans\Notify\Messages\DingTalk\TextMessage;
 
-use function ELLa123\HyperfExceptionNotify\array_filter_filled;
+use function Ella123\HyperfUtils\arrayFilterFilled;
 use function Hyperf\Config\config;
 
 class DingTalkChannel extends NotifyAbstractChannel
 {
     protected function createMessage(string $report): MessageInterface
     {
-        return TextMessage::create(array_filter_filled([
+        return TextMessage::create(arrayFilterFilled([
             'content' => $report,
             'atMobiles' => config('exception-notify.channels.dingTalk.atMobiles'),
             'atDingtalkIds' => config('exception-notify.channels.dingTalk.atDingtalkIds'),

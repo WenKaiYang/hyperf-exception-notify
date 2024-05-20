@@ -24,7 +24,7 @@ use function Hyperf\Support\make;
 
 class CollectorManager extends Fluent
 {
-    protected $time;
+    protected int $time;
 
     /**
      * @throws InvalidArgumentException
@@ -62,7 +62,10 @@ class CollectorManager extends Fluent
     public function offsetSet($offset, mixed $value): void
     {
         if (! $value instanceof CollectorContract) {
-            throw new InvalidArgumentException(sprintf('Collector must be instance of %s', CollectorContract::class));
+            throw new InvalidArgumentException(sprintf(
+                'Collector must be instance of %s',
+                CollectorContract::class
+            ));
         }
 
         $this->attributes[$offset] = $value;
