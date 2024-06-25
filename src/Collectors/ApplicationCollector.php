@@ -24,7 +24,6 @@ class ApplicationCollector extends Collector
             'version' => config('app_version', env('APP_VERSION')),
             'environment' => config('app_env', env('APP_ENV')),
             'scan_cacheable' => env('SCAN_CACHEABLE'),
-            'locale' => env('APP_LOCALE'),
         ];
     }
 }
