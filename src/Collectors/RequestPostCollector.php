@@ -17,10 +17,13 @@ use Hyperf\Utils\Str;
 
 class RequestPostCollector extends Collector
 {
-    public function __construct(protected RequestInterface $request) {}
+    public function __construct(protected ?RequestInterface $request) {}
 
     public function collect(): array
     {
+        if (!$this->request) {
+            return [];
+        }
         return collect($this->request->post())
             ->transform(static function ($val, $key) {
                 Str::is([

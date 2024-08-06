@@ -17,10 +17,13 @@ use Hyperf\HttpServer\Router\Dispatched;
 
 class RequestMiddlewareCollector extends Collector
 {
-    public function __construct(protected RequestInterface $request) {}
+    public function __construct(protected ?RequestInterface $request) {}
 
     public function collect(): ?array
     {
+        if (!$this->request) {
+            return [];
+        }
         $dispatched = $this->request->getAttribute(Dispatched::class);
         return $dispatched->handler?->options['middleware'] ?? [];
     }

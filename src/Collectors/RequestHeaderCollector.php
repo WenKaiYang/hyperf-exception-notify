@@ -16,10 +16,13 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 
 class RequestHeaderCollector extends Collector
 {
-    public function __construct(protected RequestInterface $request) {}
+    public function __construct(protected ?RequestInterface $request) {}
 
     public function collect(): array
     {
+        if (!$this->request) {
+            return [];
+        }
         return $this->request->getHeaders();
     }
 }

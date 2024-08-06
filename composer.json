@@ -44,7 +44,8 @@
     "symfony/var-dumper": "^6.0"
   },
   "suggest": {
-    "swow/swow": "Required to create swow components."
+    "swow/swow": "Required to create swow components.",
+    "ext-redis": "Required to create redis"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

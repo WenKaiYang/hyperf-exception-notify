@@ -16,10 +16,13 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 
 class RequestFileCollector extends Collector
 {
-    public function __construct(protected RequestInterface $request) {}
+    public function __construct(protected ?RequestInterface $request) {}
 
     public function collect(): array
     {
+        if (!$this->request) {
+            return [];
+        }
         $files = $this->request->getUploadedFiles();
         array_walk_recursive($files, static function (&$file): void {
             $file = [
