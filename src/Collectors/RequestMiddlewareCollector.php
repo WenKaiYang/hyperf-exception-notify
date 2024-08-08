@@ -14,17 +14,19 @@ namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Router\Dispatched;
+use Throwable;
 
 class RequestMiddlewareCollector extends Collector
 {
-    public function __construct(protected ?RequestInterface $request) {}
+    public function __construct(protected RequestInterface $request) {}
 
     public function collect(): ?array
     {
-        if (!$this->request) {
+        try {
+            $dispatched = $this->request->getAttribute(Dispatched::class);
+            return $dispatched->handler?->options['middleware'] ?? [];
+        } catch (Throwable $throwable) {
             return [];
         }
-        $dispatched = $this->request->getAttribute(Dispatched::class);
-        return $dispatched->handler?->options['middleware'] ?? [];
     }
 }

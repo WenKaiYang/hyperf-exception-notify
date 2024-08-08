@@ -13,16 +13,18 @@ declare(strict_types=1);
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Throwable;
 
 class RequestHeaderCollector extends Collector
 {
-    public function __construct(protected ?RequestInterface $request) {}
+    public function __construct(protected RequestInterface $request) {}
 
     public function collect(): array
     {
-        if (!$this->request) {
+        try {
+            return $this->request->getHeaders();
+        } catch (Throwable $throwable) {
             return [];
         }
-        return $this->request->getHeaders();
     }
 }

@@ -13,24 +13,26 @@ declare(strict_types=1);
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Throwable;
 
 class RequestFileCollector extends Collector
 {
-    public function __construct(protected ?RequestInterface $request) {}
+    public function __construct(protected RequestInterface $request) {}
 
     public function collect(): array
     {
-        if (!$this->request) {
+        try {
+            $files = $this->request->getUploadedFiles();
+            array_walk_recursive($files, static function (&$file): void {
+                $file = [
+                    'name' => $file->getClientOriginalName(),
+                    'size' => $file->isFile() ? ($file->getSize() / 1000) . 'KB' : '0',
+                ];
+            });
+
+            return $files;
+        } catch (Throwable $throwable) {
             return [];
         }
-        $files = $this->request->getUploadedFiles();
-        array_walk_recursive($files, static function (&$file): void {
-            $file = [
-                'name' => $file->getClientOriginalName(),
-                'size' => $file->isFile() ? ($file->getSize() / 1000) . 'KB' : '0',
-            ];
-        });
-
-        return $files;
     }
 }
