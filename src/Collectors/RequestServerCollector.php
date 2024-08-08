@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Throwable;
 
 class RequestServerCollector extends Collector
 {
@@ -20,6 +21,10 @@ class RequestServerCollector extends Collector
 
     public function collect(): array
     {
-        return $this->request->getServerParams();
+        try {
+            return $this->request->getServerParams();
+        } catch (Throwable $throwable) {
+            return [];
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Stringable\Str;
+use Throwable;
 
 use function Hyperf\Collection\collect;
 
@@ -23,16 +24,20 @@ class RequestPostCollector extends Collector
 
     public function collect(): array
     {
-        return collect($this->request->post())
-            ->transform(static function ($val, $key) {
-                Str::is([
-                    'password',
-                    '*password',
-                    'password*',
-                ], $key) and $val = '******';
+        try {
+            return collect($this->request->post())
+                ->transform(static function ($val, $key) {
+                    Str::is([
+                        'password',
+                        '*password',
+                        'password*',
+                    ], $key) and $val = '******';
 
-                return $val;
-            })
-            ->all();
+                    return $val;
+                })
+                ->all();
+        } catch (Throwable $throwable) {
+            return [];
+        }
     }
 }

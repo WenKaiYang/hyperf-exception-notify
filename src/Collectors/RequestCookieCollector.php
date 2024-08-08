@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Throwable;
 
 class RequestCookieCollector extends Collector
 {
@@ -20,6 +21,10 @@ class RequestCookieCollector extends Collector
 
     public function collect(): array
     {
-        return $this->request->getCookieParams();
+        try {
+            return $this->request->getCookieParams();
+        } catch (Throwable $throwable) {
+            return [];
+        }
     }
 }

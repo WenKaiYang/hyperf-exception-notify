@@ -14,17 +14,16 @@ namespace ELLa123\HyperfExceptionNotify\Collectors;
 
 use Hyperf\Context\ApplicationContext;
 use Hyperf\Contract\SessionInterface;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use Throwable;
 
 class RequestSessionCollector extends Collector
 {
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
     public function collect(): array
     {
-        return ApplicationContext::getContainer()->get(SessionInterface::class)->all();
+        try {
+            return ApplicationContext::getContainer()->get(SessionInterface::class)->all();
+        } catch (Throwable $throwable) {
+            return [];
+        }
     }
 }
